@@ -1,0 +1,94 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+@layer base {
+  :root {
+    --background: 157 8% 95%;
+    --foreground: 157 5% 10%;
+    --card: 157 8% 90%;
+    --card-foreground: 157 5% 15%;
+    --popover: 157 8% 95%;
+    --popover-foreground: 157 95% 10%;
+    --primary: 157 100% 21.8%;
+    --primary-foreground: 0 0% 87.8%;
+    --secondary: 28 35% 45%;
+    --secondary-foreground: 0 0% 87.8%;
+    --muted: 119 10% 85%;
+    --muted-foreground: 157 5% 40%;
+    --accent: 119 10% 80%;
+    --accent-foreground: 157 5% 15%;
+    --destructive: 0 50% 42%;
+    --destructive-foreground: 157 5% 90%;
+    --border: 157 20% 50%;
+    --input: 157 20% 42%;
+    --ring: 157 100% 21.8%;
+    --radius: 0.5rem;
+    --sidebar-background: 184 7% 89%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 204 80% 79%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 159 98.2% 22%;
+    --sidebar-accent-foreground: 0 0% 98%;
+    --sidebar-border: 159 98.2% 22%;
+    --sidebar-ring: 159 98.2% 22%;
+  }
+  .dark {
+    --background: 157 10% 10%;
+    --foreground: 157 5% 90%;
+    --card: 157 8% 10%;
+    --card-foreground: 157 5% 90%;
+    --popover: 157 10% 5%;
+    --popover-foreground: 157 5% 90%;
+    --primary: 157 100% 21.8%;
+    --primary-foreground: 0 0% 87.8%;
+    --secondary: 28 35% 45%;
+    --secondary-foreground: 0 0% 87.8%;
+    --muted: 119 10% 25%;
+    --muted-foreground: 157 5% 60%;
+    --accent: 119 10% 25%;
+    --accent-foreground: 157 5% 90%;
+    --destructive: 0 50% 42%;
+    --destructive-foreground: 157 5% 90%;
+    --border: 157 20% 42%;
+    --input: 157 20% 42%;
+    --ring: 157 100% 21.8%;
+    --radius: 0.5rem;
+    --sidebar-background: 207 14% 23%;
+    --sidebar-foreground: 0 0% 87.8%;
+    --sidebar-primary: 204 80% 79%;
+    --sidebar-primary-foreground: 0 0% 87.8%;
+    --sidebar-accent: 159 98.2% 22%;
+    --sidebar-accent-foreground: 0 0% 87.8%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 204 80% 79%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+.glassmorphic-card {
+  background: rgba(255, 255, 255, 0.1); /* Semi-transparent white */
+  backdrop-filter: blur(10px); /* Blurred background */
+  -webkit-backdrop-filter: blur(10px); /* For Safari support */
+  border-radius: 8px;
+  border: 1.8px solid rgba(167, 73, 73, 0.4); /* Light border */
+  box-shadow: 5px 10px 10px rgba(70, 41, 122, 0.2); /* Subtle shadow */
+}
