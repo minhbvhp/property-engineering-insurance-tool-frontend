@@ -1,7 +1,7 @@
 import "server-only";
 
 import { getAllCustomers } from "@/models/customer/data";
-import { columns } from "@/components/customer/customer-columns";
+import { customerColumns } from "@/components/customer/customer-columns";
 import { DataTableWithPagination } from "@/components/ui/data-table-with-pagination";
 import { Suspense } from "react";
 import { SkeletonTable } from "@/components/ui/skeleton-table";
@@ -24,7 +24,7 @@ async function CustomerData(props: IProps) {
     <>
       {res.data && res.data.customers.length > 0 ? (
         <DataTableWithPagination
-          columns={columns}
+          columns={customerColumns}
           data={res.data.customers}
           current={+current}
           pageSize={+pageSize}

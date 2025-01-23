@@ -43,6 +43,7 @@ import {
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { handleSignOut } from "@/utils/handleSignOut";
 
 export default function DialogCreateCustomer() {
   const form = useForm<CreateCustomerFormValues>({
@@ -76,6 +77,7 @@ export default function DialogCreateCustomer() {
     const result = await createCustomer(newCustomer);
 
     if (!result) {
+      handleSignOut();
     } else if (result?.error) {
       toast.error(result?.message);
     } else {

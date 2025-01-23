@@ -21,7 +21,7 @@ import { ICustomer } from "@/models/customer/definition";
 import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
 
-export const columns: ColumnDef<ICustomer>[] = [
+export const customerColumns: ColumnDef<ICustomer>[] = [
   {
     accessorKey: "ordinal",
     header: "STT",

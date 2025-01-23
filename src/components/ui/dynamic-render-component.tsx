@@ -10,6 +10,15 @@ type Props = {
 const DynamicRenderComponent: React.FC<Props> = ({ condition }) => {
   switch (condition) {
     //#region Company
+    case "Bảo Việt Hải Phòng":
+      return (
+        <Badge
+          variant="outline"
+          className="bg-teal-600 text-[#f5f5f5] font-normal border-0"
+        >
+          Bảo Việt Hải Phòng
+        </Badge>
+      );
 
     //#endregion
 

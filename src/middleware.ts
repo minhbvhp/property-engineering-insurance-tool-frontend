@@ -16,7 +16,8 @@ export async function middleware(request: NextRequest) {
     pathname.startsWith(path)
   );
   const isPublicPage = publicPaths.some((path) => pathname.startsWith(path));
-  const isAdminPage = pathname.includes("admin");
+  const isAdminPage =
+    pathname.includes("admin") || pathname.includes("organization");
 
   if (!secret) return signOut(request);
 

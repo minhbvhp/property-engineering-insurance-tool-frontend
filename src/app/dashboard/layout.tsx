@@ -19,45 +19,6 @@ export const metadata: Metadata = {
   description: "Dashboard",
 };
 
-const navMain: MenuItem[] = [
-  {
-    title: "Khách hàng",
-    url: "customers",
-    iconName: "users",
-    isActive: false,
-    items: [
-      {
-        title: "Danh sách",
-        url: "customers?current=1&pageSize=10",
-        isActive: false,
-      },
-      {
-        title: "Tìm kiếm",
-        url: "customers/search",
-        isActive: false,
-      },
-    ],
-  },
-  // {
-  //   title: "Dịch vụ",
-  //   url: "#",
-  //   icon: Package,
-  //   isActive: false,
-  //   items: [
-  //     {
-  //       title: "Danh sách",
-  //       url: "customers/create",
-  //       isActive: false,
-  //     },
-  //     {
-  //       title: "Tìm kiếm",
-  //       url: "customers/search",
-  //       isActive: false,
-  //     },
-  //   ],
-  // },
-];
-
 export default async function DashboardLayout({
   children,
 }: Readonly<{
@@ -68,6 +29,72 @@ export default async function DashboardLayout({
   if (!session) {
     return <>Something wrong</>;
   }
+
+  const navMain: MenuItem[] = [
+    {
+      title: "Khách hàng",
+      url: "customers",
+      iconName: "users",
+      isActive: false,
+      items: [
+        {
+          title: "Danh sách",
+          url: "customers?current=1&pageSize=10",
+          isActive: false,
+        },
+        {
+          title: "Tìm kiếm",
+          url: "customers/search",
+          isActive: false,
+        },
+      ],
+    },
+    ...(session.user.role.name === "Admin"
+      ? [
+          {
+            title: "Bộ máy tổ chức",
+            url: "organization",
+            iconName: "layoutGrid",
+            isActive: false,
+            items: [
+              {
+                title: "Phòng",
+                url: "organization/departments",
+                isActive: false,
+              },
+              {
+                title: "Nhân viên",
+                url: "organization/employees",
+                isActive: false,
+              },
+              {
+                title: "Đại lý",
+                url: "organization/agents",
+                isActive: false,
+              },
+            ],
+          },
+        ]
+      : []),
+    // {
+    //   title: "Dịch vụ",
+    //   url: "#",
+    //   icon: Package,
+    //   isActive: false,
+    //   items: [
+    //     {
+    //       title: "Danh sách",
+    //       url: "customers/create",
+    //       isActive: false,
+    //     },
+    //     {
+    //       title: "Tìm kiếm",
+    //       url: "customers/search",
+    //       isActive: false,
+    //     },
+    //   ],
+    // },
+  ];
 
   const { user } = session as Session;
 
