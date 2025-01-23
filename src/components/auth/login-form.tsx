@@ -58,9 +58,6 @@ export default function LoginForm() {
         >
           Đăng nhập
         </CardTitle>
-        <CardDescription>
-          Sử dụng email và mật khẩu để đăng nhập
-        </CardDescription>
       </CardHeader>
 
       <CardContent>
