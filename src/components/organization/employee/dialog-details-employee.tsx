@@ -12,16 +12,16 @@ import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { titleDashboardFont } from "@/lib/font";
-import { IDepartment } from "@/models/department/definition";
+import { IEmployee } from "@/models/employee/definition";
 import { Binary, CaseUpper, Eye, Network } from "lucide-react";
 import { useState } from "react";
 
 interface IProps {
-  department: IDepartment;
+  employee: IEmployee;
 }
 
-export default function DialogDetailsDepartment(props: IProps) {
-  const { department } = props;
+export default function DialogDetailsEmployee(props: IProps) {
+  const { employee } = props;
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
@@ -39,10 +39,10 @@ export default function DialogDetailsDepartment(props: IProps) {
           <DialogTitle
             className={`${titleDashboardFont.className} text-primary dark:text-[#f5f5f5]`}
           >
-            Thông tin Phòng - {department.name}
+            Thông tin Phòng - {employee.fullName}
           </DialogTitle>
           <DialogDescription className="sr-only">
-            Detail department
+            Detail employee
           </DialogDescription>
         </DialogHeader>
 
@@ -55,7 +55,7 @@ export default function DialogDetailsDepartment(props: IProps) {
               type="text"
               className="placeholder:italic"
               placeholder="Số URN"
-              defaultValue={department.urn}
+              defaultValue={employee.urn}
               readOnly
             />
 
@@ -63,8 +63,8 @@ export default function DialogDetailsDepartment(props: IProps) {
               PrefixIcon={CaseUpper}
               type="text"
               className="placeholder:italic"
-              placeholder="Tên phòng"
-              defaultValue={department.name}
+              placeholder="Tên nhân viên"
+              defaultValue={employee.fullName}
               readOnly
             />
 
@@ -72,8 +72,8 @@ export default function DialogDetailsDepartment(props: IProps) {
               PrefixIcon={Network}
               type="text"
               className="placeholder:italic"
-              placeholder="Chi nhánh"
-              defaultValue={`${department.companyBranch.company.shortName} - ${department.companyBranch.name}`}
+              placeholder="Phòng"
+              defaultValue={employee.department.name}
               readOnly
             />
           </div>

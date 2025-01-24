@@ -1,15 +1,5 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import {
   Form,
   FormControl,
@@ -18,61 +8,58 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { SelectWithLoading } from "@/components/ui/select-with-loading";
-import { Separator } from "@/components/ui/separator";
-import { titleDashboardFont } from "@/lib/font";
-import { getAllCompanyBranches } from "@/models/company-branch/data";
-import { ICompanyBranch } from "@/models/company-branch/definition";
-import { editDepartment } from "@/models/department/actions";
-import {
-  IEditDepartmentDto,
-  IDepartment,
-} from "@/models/department/definition";
-import {
-  EditDepartmentFormValues,
-  editDepartmentSchema,
-} from "@/models/department/validations";
-import { handleSignOut } from "@/utils/handleSignOut";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Binary, CaseUpper, Loader2, Network, Pencil } from "lucide-react";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { Binary, CaseUpper, Loader2, Network, Plus } from "lucide-react";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
+import {
+  CreateAgentFormValues,
+  createAgentSchema,
+} from "@/models/agent/validations";
+import { Button } from "@/components/ui/button";
+import { titleDashboardFont } from "@/lib/font";
+import { ICreateAgentDto } from "@/models/agent/definition";
+import { createAgent } from "@/models/agent/actions";
+import { useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Separator } from "@/components/ui/separator";
+import { SelectWithLoading } from "@/components/ui/select-with-loading";
+import { IDepartment } from "@/models/department/definition";
+import { getAllDepartments } from "@/models/department/data";
+import { handleSignOut } from "@/utils/handleSignOut";
 
-interface IProps {
-  department: IDepartment;
-}
-
-export default function DialogEditDepartment(props: IProps) {
-  const fetchCompanyBranches = async (): Promise<ICompanyBranch[]> => {
-    const res = await getAllCompanyBranches();
+export default function DialogCreateAgent() {
+  const fetchDepartments = async (): Promise<IDepartment[]> => {
+    const res = await getAllDepartments();
     return res.data;
   };
 
-  const { department } = props;
-
-  const form = useForm<EditDepartmentFormValues>({
-    resolver: zodResolver(editDepartmentSchema),
+  const form = useForm<CreateAgentFormValues>({
+    resolver: zodResolver(createAgentSchema),
     defaultValues: {
-      urn: department.urn,
-      name: department.name,
-      companyBranchId: department.companyBranchId.toString(),
+      urn: "",
+      fullName: "",
+      departmentId: "",
     },
   });
 
   const { isSubmitting } = form.formState;
 
-  const onSubmit = async (values: EditDepartmentFormValues) => {
-    const editingDepartment: IEditDepartmentDto = {
+  const onSubmit = async (values: CreateAgentFormValues) => {
+    const newAgent: ICreateAgentDto = {
       urn: values.urn,
-      name: values.name,
-      companyBranchId: +values.companyBranchId,
+      fullName: values.fullName,
+      departmentId: +values.departmentId,
     };
 
-    const result = await editDepartment(
-      department.id.toString(),
-      editingDepartment
-    );
+    const result = await createAgent(newAgent);
 
     if (!result) {
       handleSignOut();
@@ -90,10 +77,10 @@ export default function DialogEditDepartment(props: IProps) {
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
-        <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-          <Pencil />
-          Sửa
-        </DropdownMenuItem>
+        <Button>
+          <Plus />
+          Thêm mới
+        </Button>
       </DialogTrigger>
 
       <DialogContent className="max-w-screen-sm px-10">
@@ -101,11 +88,9 @@ export default function DialogEditDepartment(props: IProps) {
           <DialogTitle
             className={`${titleDashboardFont.className} text-primary dark:text-[#f5f5f5]`}
           >
-            Cập nhật Phòng - {department.name}
+            Phòng mới
           </DialogTitle>
-          <DialogDescription className="sr-only">
-            Edit department
-          </DialogDescription>
+          <DialogDescription className="sr-only">New agent</DialogDescription>
         </DialogHeader>
 
         <Separator />
@@ -140,7 +125,7 @@ export default function DialogEditDepartment(props: IProps) {
 
                 <FormField
                   control={form.control}
-                  name="name"
+                  name="fullName"
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
@@ -148,7 +133,7 @@ export default function DialogEditDepartment(props: IProps) {
                           PrefixIcon={CaseUpper}
                           type="text"
                           className="placeholder:italic"
-                          placeholder="Tên phòng"
+                          placeholder="Tên đại lý"
                           hasClear
                           {...field}
                         />
@@ -161,24 +146,19 @@ export default function DialogEditDepartment(props: IProps) {
 
                 <FormField
                   control={form.control}
-                  name="companyBranchId"
+                  name="departmentId"
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <SelectWithLoading<ICompanyBranch>
-                          fetchOptions={fetchCompanyBranches}
-                          labelExtractor={(companyBranch) =>
-                            `${companyBranch.company.shortName} - ${companyBranch.name}`
+                        <SelectWithLoading<IDepartment>
+                          fetchOptions={fetchDepartments}
+                          labelExtractor={(department) => department.name}
+                          valueExtractor={(department) =>
+                            department.id.toString()
                           }
-                          valueExtractor={(companyBranch) =>
-                            companyBranch.id.toString()
-                          }
-                          placeholder="Chọn chi nhánh..."
+                          placeholder="Chọn Phòng..."
                           PrefixIcon={Network}
                           onChange={field.onChange}
-                          defaultValue={
-                            form.formState.defaultValues?.companyBranchId
-                          }
                         />
                       </FormControl>
 
@@ -198,7 +178,7 @@ export default function DialogEditDepartment(props: IProps) {
                       Đang xử lý...
                     </>
                   ) : (
-                    "Cập nhật"
+                    "Tạo mới"
                   )}
                 </Button>
               </form>

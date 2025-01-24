@@ -1,8 +1,4 @@
-import {
-  COMPANY_BRANCH_INVALID,
-  REQUIRED_FIELD,
-  ROLE_INVALID,
-} from "@/lib/messages";
+import { COMPANY_BRANCH_INVALID, REQUIRED_FIELD } from "@/lib/messages";
 import { z } from "zod";
 
 export const createDepartmentSchema = z.object({

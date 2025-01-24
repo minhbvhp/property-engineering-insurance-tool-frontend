@@ -21,17 +21,14 @@ import { Input } from "@/components/ui/input";
 import { SelectWithLoading } from "@/components/ui/select-with-loading";
 import { Separator } from "@/components/ui/separator";
 import { titleDashboardFont } from "@/lib/font";
-import { getAllCompanyBranches } from "@/models/company-branch/data";
-import { ICompanyBranch } from "@/models/company-branch/definition";
-import { editDepartment } from "@/models/department/actions";
+import { getAllDepartments } from "@/models/department/data";
+import { IDepartment } from "@/models/department/definition";
+import { editAgent } from "@/models/agent/actions";
+import { IEditAgentDto, IAgent } from "@/models/agent/definition";
 import {
-  IEditDepartmentDto,
-  IDepartment,
-} from "@/models/department/definition";
-import {
-  EditDepartmentFormValues,
-  editDepartmentSchema,
-} from "@/models/department/validations";
+  EditAgentFormValues,
+  editAgentSchema,
+} from "@/models/agent/validations";
 import { handleSignOut } from "@/utils/handleSignOut";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Binary, CaseUpper, Loader2, Network, Pencil } from "lucide-react";
@@ -40,39 +37,36 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
 interface IProps {
-  department: IDepartment;
+  agent: IAgent;
 }
 
-export default function DialogEditDepartment(props: IProps) {
-  const fetchCompanyBranches = async (): Promise<ICompanyBranch[]> => {
-    const res = await getAllCompanyBranches();
+export default function DialogEditAgent(props: IProps) {
+  const fetchDepartments = async (): Promise<IDepartment[]> => {
+    const res = await getAllDepartments();
     return res.data;
   };
 
-  const { department } = props;
+  const { agent } = props;
 
-  const form = useForm<EditDepartmentFormValues>({
-    resolver: zodResolver(editDepartmentSchema),
+  const form = useForm<EditAgentFormValues>({
+    resolver: zodResolver(editAgentSchema),
     defaultValues: {
-      urn: department.urn,
-      name: department.name,
-      companyBranchId: department.companyBranchId.toString(),
+      urn: agent.urn,
+      fullName: agent.fullName,
+      departmentId: agent.departmentId.toString(),
     },
   });
 
   const { isSubmitting } = form.formState;
 
-  const onSubmit = async (values: EditDepartmentFormValues) => {
-    const editingDepartment: IEditDepartmentDto = {
+  const onSubmit = async (values: EditAgentFormValues) => {
+    const editingAgent: IEditAgentDto = {
       urn: values.urn,
-      name: values.name,
-      companyBranchId: +values.companyBranchId,
+      fullName: values.fullName,
+      departmentId: +values.departmentId,
     };
 
-    const result = await editDepartment(
-      department.id.toString(),
-      editingDepartment
-    );
+    const result = await editAgent(agent.id.toString(), editingAgent);
 
     if (!result) {
       handleSignOut();
@@ -101,11 +95,9 @@ export default function DialogEditDepartment(props: IProps) {
           <DialogTitle
             className={`${titleDashboardFont.className} text-primary dark:text-[#f5f5f5]`}
           >
-            Cập nhật Phòng - {department.name}
+            Cập nhật nhân viên - {agent.fullName}
           </DialogTitle>
-          <DialogDescription className="sr-only">
-            Edit department
-          </DialogDescription>
+          <DialogDescription className="sr-only">Edit agent</DialogDescription>
         </DialogHeader>
 
         <Separator />
@@ -140,7 +132,7 @@ export default function DialogEditDepartment(props: IProps) {
 
                 <FormField
                   control={form.control}
-                  name="name"
+                  name="fullName"
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
@@ -148,7 +140,7 @@ export default function DialogEditDepartment(props: IProps) {
                           PrefixIcon={CaseUpper}
                           type="text"
                           className="placeholder:italic"
-                          placeholder="Tên phòng"
+                          placeholder="Tên nhân viên"
                           hasClear
                           {...field}
                         />
@@ -161,23 +153,21 @@ export default function DialogEditDepartment(props: IProps) {
 
                 <FormField
                   control={form.control}
-                  name="companyBranchId"
+                  name="departmentId"
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <SelectWithLoading<ICompanyBranch>
-                          fetchOptions={fetchCompanyBranches}
-                          labelExtractor={(companyBranch) =>
-                            `${companyBranch.company.shortName} - ${companyBranch.name}`
+                        <SelectWithLoading<IDepartment>
+                          fetchOptions={fetchDepartments}
+                          labelExtractor={(department) => department.name}
+                          valueExtractor={(department) =>
+                            department.id.toString()
                           }
-                          valueExtractor={(companyBranch) =>
-                            companyBranch.id.toString()
-                          }
-                          placeholder="Chọn chi nhánh..."
+                          placeholder="Chọn Phòng..."
                           PrefixIcon={Network}
                           onChange={field.onChange}
                           defaultValue={
-                            form.formState.defaultValues?.companyBranchId
+                            form.formState.defaultValues?.departmentId
                           }
                         />
                       </FormControl>

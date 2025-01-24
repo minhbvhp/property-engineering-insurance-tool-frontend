@@ -12,27 +12,27 @@ import {
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { Separator } from "@/components/ui/separator";
 import { titleDashboardFont } from "@/lib/font";
-import { deletePermanentlyDepartment } from "@/models/department/actions";
-import { IDepartment } from "@/models/department/definition";
+import { deletePermanentlyEmployee } from "@/models/employee/actions";
+import { IEmployee } from "@/models/employee/definition";
 import { handleSignOut } from "@/utils/handleSignOut";
 import { Loader2, Trash } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
 interface IProps {
-  department: IDepartment;
+  employee: IEmployee;
 }
 
-export default function DialogDeleteDepartment(props: IProps) {
-  const { department } = props;
+export default function DialogDeleteEmployee(props: IProps) {
+  const { employee } = props;
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  const deleteDepartment = async () => {
+  const deleteEmployee = async () => {
     setIsDeleting(true);
 
-    const result = await deletePermanentlyDepartment(department.id.toString());
+    const result = await deletePermanentlyEmployee(employee.id.toString());
 
     if (!result) {
       handleSignOut();
@@ -60,16 +60,16 @@ export default function DialogDeleteDepartment(props: IProps) {
           <DialogTitle
             className={`${titleDashboardFont.className} text-primary dark:text-[#f5f5f5]`}
           >
-            <span className="text-red-500">Xóa Phòng</span>
-            <span className="text-primary"> - {department.name}</span>
+            <span className="text-red-500">Xóa nhân viên</span>
+            <span className="text-primary"> - {employee.fullName}</span>
           </DialogTitle>
 
           <Separator />
 
           <DialogDescription className="dark:text-[#f5f5f5] py-4">
-            Phòng <span className="font-semibold">{department.name}</span> sẽ bị
-            xóa vĩnh viễn. Chức năng này không thể hoàn tác. Bạn chắc chắn muốn
-            xóa chứ?
+            Nhân viên <span className="font-semibold">{employee.fullName}</span>{" "}
+            sẽ bị xóa vĩnh viễn. Chức năng này không thể hoàn tác. Bạn chắc chắn
+            muốn xóa chứ?
           </DialogDescription>
         </DialogHeader>
 
@@ -77,7 +77,7 @@ export default function DialogDeleteDepartment(props: IProps) {
           <Button
             disabled={isDeleting}
             variant="destructive"
-            onClick={() => deleteDepartment()}
+            onClick={() => deleteEmployee()}
           >
             {isDeleting ? (
               <>
