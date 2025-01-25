@@ -1,7 +1,6 @@
 "server-only";
-
-import LoginPage from "@/app/(auth)/login/page";
+import { redirect } from "next/navigation";
 
 export default async function Home() {
-  return <LoginPage />;
+  redirect("/login");
 }
